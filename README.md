@@ -13,7 +13,7 @@ Esta é uma aplicação React para cadastro e consulta de usuários. Utiliza loc
 
 ## 🚀 Tecnologias
 
-- React 18
+- React 19
 - Vite
 - React Router DOM
 - Bootstrap 5
