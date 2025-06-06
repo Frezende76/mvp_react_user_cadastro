@@ -19,6 +19,24 @@ Esta é uma aplicação React para cadastro e consulta de usuários. Utiliza loc
 - Bootstrap 5
 - API externa: JSONPlaceholder
 
+## 📌 Clonando o Repositório
+Se você deseja baixar o projeto diretamente do GitHub, use o comando abaixo:
+
+```bash
+git clone https://github.com/Frezende76/mvp_react_user_cadastro.git
+
+```
+
+Caso contrário, você pode baixar o código compactado (.zip) e extraí-lo manualmente.
+
+Entre no diretório do projeto:
+
+```bash
+cd mvp_react_user_cadastro
+```
+
+---
+
 ## ▶️ Como executar
 
 ```bash
