@@ -69,9 +69,9 @@ Acesse em `http://localhost:5173`.
 │   │   ├── validateForm.js
 │   ├── App.jsx
 │   ├── index.css
-│   └── main.jsx
+│   ├── main.jsx
 │   ├── .gitignore
-│   ├── .eslint.config.js
+│   ├── eslint.config.js
 │   ├── index.html
 │   ├── package-lock.json
 │   ├── package.json
