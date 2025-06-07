@@ -40,11 +40,33 @@ export default function Cadastro() {
     }
     
     const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
-    localStorage.setItem('usuarios', JSON.stringify([...usuarios, formData]));
-    setFormData({ nome: '', endereco: '', email: '', telefone: '' });
-    setFeedback('Usuário cadastrado com sucesso!');
-    setTimeout(() => setFeedback(''), 3000);
+
+    // 🔍 Verifica se já existe um usuário com o mesmo e-mail
+  const jaExiste = usuarios.some(u => 
+    u.nome === formData.nome &&
+    u.endereco === formData.endereco &&
+    u.email === formData.email &&
+    u.telefone === formData.telefone
+  );
+
+  if (jaExiste) {
+    setFeedback('Usuário já cadastrado com os mesmos dados.');
+    setTimeout(() => {
+      setFeedback('');
+      setFormData({ nome: '', endereco: '', email: '', telefone: '' });
+    }, 3000);
+    return;
+  }
+
+  // ✅ Cadastra novo usuário
+  localStorage.setItem('usuarios', JSON.stringify([...usuarios, formData]));
+  setFeedback('Usuário cadastrado com sucesso!');
+  setTimeout(() => {
+      setFeedback('');
+      setFormData({ nome: '', endereco: '', email: '', telefone: '' });
+    }, 3000);
   };
+
     return (
         <main className="container mt-4">
         <h2>Cadastro de Usuários</h2>
