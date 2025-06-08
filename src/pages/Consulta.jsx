@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
 
-
-export default function Consulta() {
+export default function Consulta({
+  title = "Consultar Usuários",
+  placeholder = "Digite o nome do usuário a pesquisar",
+  noUsersMessage = "Nenhum usuário encontrado",
+  deleteSuccessMessage = "deletado(a) com sucesso!",
+  tooltipMessage = "Digite o nome do usuário a pesquisar"
+}) {
   const [usuarios, setUsuarios] = useState([]);
   const [filtroNome, setFiltroNome] = useState('');
-  const [feedback, setFeedback] = useState(''); // ✅ novo estado para mensagem
+  const [feedback, setFeedback] = useState('');
 
   useEffect(() => {
     const dados = localStorage.getItem('usuarios');
@@ -13,31 +18,34 @@ export default function Consulta() {
   }, []);
 
   const handleDelete = index => {
+    const usuarioExcluido = usuarios[index]
     const novos = usuarios.filter((_, i) => i !== index);
     setUsuarios(novos);
     localStorage.setItem('usuarios', JSON.stringify(novos));
-    setFeedback('Usuário deletado com sucesso!'); // ✅ define mensagem
-    setTimeout(() => setFeedback(''), 3000); // ✅ limpa após 3 segundos
+    setFeedback(`${usuarioExcluido.nome} ${deleteSuccessMessage} `);
+    setTimeout(() => setFeedback(''), 3000);
   };
 
-  const usuariosFiltrados = usuarios.filter(u => u.nome.toLowerCase().includes(filtroNome.toLowerCase()));
-  
+  const usuariosFiltrados = usuarios.filter(u =>
+    u.nome.toLowerCase().includes(filtroNome.toLowerCase())
+  );
+
   return (
+    <main className="container mt-4">
+      <h2 className="mb-3">{title}</h2>
 
-   <main className="container mt-4">
-      <h2 className="mb-3">Consultar Usuários</h2>
-
-      {/* Mensagem de sucesso */}
       {feedback && <div className="alert alert-success">{feedback}</div>}
-      
+
       <input
         type="text"
         className="form-control mb-3"
         value={filtroNome}
         onChange={e => setFiltroNome(e.target.value)}
+        placeholder={placeholder}
         data-bs-toggle="tooltip"
-        title="Digite o nome do usuário a pesquisar"
+        title={tooltipMessage}
       />
+
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead className="table-dark">
@@ -57,7 +65,7 @@ export default function Consulta() {
             ) : (
               <tr>
                 <td colSpan="5" className="text-center">
-                  Nenhum usuário encontrado
+                  {noUsersMessage}
                 </td>
               </tr>
             )}
@@ -65,6 +73,7 @@ export default function Consulta() {
         </table>
       </div>
     </main>
-
   );
 }
+
+

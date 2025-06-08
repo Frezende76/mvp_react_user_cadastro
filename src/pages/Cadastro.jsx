@@ -1,98 +1,138 @@
 import React, { useState, useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
-import { validateForm } from '../utils/validateForm'; // ✅ importação da função de validação
+import { validateForm } from '../utils/validateForm';
+import InputField from '../components/InputField'; // ✅ Importa componente reutilizável
 
-export default function Cadastro() {
+export default function Cadastro(props) {
+  const apiUrl = props.apiUrl || 'https://jsonplaceholder.typicode.com/users';
+  const successMessage = props.successMessage || 'cadastrado(a) com sucesso!';
+  const duplicateMessage = props.duplicateMessage || 'já cadastrado(a) com os mesmos dados.';
+  const errorLoadingMessage = props.errorLoadingMessage || 'Erro ao carregar dados da API.';
+  const invalidFormMessage = props.invalidFormMessage || 'Por favor, preencha todos os campos corretamente.';
 
-    
-    const [formData, setFormData] = useState({ nome: '', endereco: '', email: '', telefone: '' });
-    const [usuariosApi, setUsuariosApi] = useState([]);
-    const [feedback, setFeedback] = useState('');
-    // const navigate = useNavigate(); // ⬅️ Hook de navegação
+  const [formData, setFormData] = useState({ nome: '', endereco: '', email: '', telefone: '' });
+  const [usuariosApi, setUsuariosApi] = useState([]);
+  const [feedback, setFeedback] = useState('');
 
-    useEffect(() => {
-       fetch('https://jsonplaceholder.typicode.com/users')
+  useEffect(() => {
+    fetch(apiUrl)
       .then(res => res.json())
-      .then(data => setUsuariosApi(data.map(u => ({
-        nome: u.name,
-        endereco: `${u.address.street}, ${u.address.city}`,
-        email: u.email,
-        telefone: u.phone
-      }))))
-      .catch(() => setFeedback('Erro ao carregar dados da API.'));
-  }, []);
+      .then(data =>
+        setUsuariosApi(
+          data.map(u => ({
+            nome: u.name,
+            endereco: `${u.address.street}, ${u.address.city}`,
+            email: u.email,
+            telefone: u.phone,
+          }))
+        )
+      )
+      .catch(() => setFeedback(errorLoadingMessage));
+  }, [apiUrl, errorLoadingMessage]);
 
-    const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 
-    const handleSelect = e => {
-      const selecionado = usuariosApi.find(u => u.nome === e.target.value);
-      if (selecionado) setFormData(selecionado);
-    };
+  const handleSelect = e => {
+    const selecionado = usuariosApi.find(u => u.nome === e.target.value);
+    if (selecionado) setFormData(selecionado);
+  };
 
-    const handleSubmit = e => {
-      e.preventDefault();
+  const handleSubmit = e => {
+    e.preventDefault();
 
-    
-    // ✅ Validação dos campos com função externa
     if (!validateForm(formData)) {
-      setFeedback('Por favor, preencha todos os campos corretamente.');
+      setFeedback(invalidFormMessage);
       return;
     }
-    
+
     const usuarios = JSON.parse(localStorage.getItem('usuarios') || '[]');
 
-    // 🔍 Verifica se já existe um usuário com o mesmo e-mail
-  const jaExiste = usuarios.some(u => 
-    u.nome === formData.nome &&
-    u.endereco === formData.endereco &&
-    u.email === formData.email &&
-    u.telefone === formData.telefone
-  );
+    const jaExiste = usuarios.some(
+      u =>
+        u.nome === formData.nome &&
+        u.endereco === formData.endereco &&
+        u.email === formData.email &&
+        u.telefone === formData.telefone
+    );
 
-  if (jaExiste) {
-    setFeedback('Usuário já cadastrado com os mesmos dados.');
+    if (jaExiste) {
+      setFeedback(`${formData.nome} ${duplicateMessage} `);
+      setTimeout(() => {
+        setFeedback('');
+        setFormData({ nome: '', endereco: '', email: '', telefone: '' });
+      }, 3000);
+      return;
+    }
+
+    localStorage.setItem('usuarios', JSON.stringify([...usuarios, formData]));
+    setFeedback(`${formData.nome} ${successMessage} ` );
     setTimeout(() => {
-      setFeedback('');
-      setFormData({ nome: '', endereco: '', email: '', telefone: '' });
-    }, 3000);
-    return;
-  }
-
-  // ✅ Cadastra novo usuário
-  localStorage.setItem('usuarios', JSON.stringify([...usuarios, formData]));
-  setFeedback('Usuário cadastrado com sucesso!');
-  setTimeout(() => {
       setFeedback('');
       setFormData({ nome: '', endereco: '', email: '', telefone: '' });
     }, 3000);
   };
 
-    return (
-        <main className="container mt-4">
-        <h2>Cadastro de Usuários</h2>
-        {feedback && <div className="alert alert-success">{feedback}</div>}
-        <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-            <label className="form-label">Nome:</label>
-            <select className="form-select" value={formData.nome} onChange={handleSelect} required data-bs-toggle="tooltip" title="Selecione um nome da lista">
-                <option value=""></option>
-                {usuariosApi.map((u, i) => <option key={i} value={u.nome}>{u.nome}</option>)}
-            </select>
-            </div>
-            <div className="mb-3">
-            <label className="form-label">Endereço:</label>
-            <input className="form-control" name="endereco" value={formData.endereco} onChange={handleChange} required data-bs-toggle="tooltip" title="Digite o endereço completo"/>
-            </div>
-            <div className="mb-3">
-            <label className="form-label">Email:</label>
-            <input className="form-control" type="email" name="email" value={formData.email} onChange={handleChange} required data-bs-toggle="tooltip" title="Informe um email válido"/>
-            </div>
-            <div className="mb-3">
-            <label className="form-label">Telefone:</label>
-            <input className="form-control" name="telefone" value={formData.telefone} onChange={handleChange} required data-bs-toggle="tooltip" title="Digite o número com DDD"/>
-            </div>
-            <button className="btn btn-primary" type="submit" data-bs-toggle="tooltip" title="Clique para cadastrar o usuário">Cadastrar</button>
-        </form>
-        </main>
-    );
+  return (
+    <main className="container mt-4">
+      <h2>{props.title || 'Cadastro de Usuários'}</h2>
+      {feedback && <div className="alert alert-success">{feedback}</div>}
+
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label className="form-label">Nome:</label>
+          <select
+            className="form-select"
+            value={formData.nome}
+            onChange={handleSelect}
+            required
+            data-bs-toggle="tooltip"
+            title="Selecione um nome da lista"
+          >
+            <option value=""></option>
+            {usuariosApi.map((u, i) => (
+              <option key={i} value={u.nome}>
+                {u.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-3">
+          <InputField
+            label="Endereço:"
+            name="endereco"
+            value={formData.endereco}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mb-3">
+          <InputField
+            label="Email:"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="mb-3">
+          <InputField
+            label="Telefone:"
+            name="telefone"
+            value={formData.telefone}
+            onChange={handleChange}
+          />
+        </div>
+
+        <button
+          className="btn btn-primary"
+          type="submit"
+          data-bs-toggle="tooltip"
+          title="Clique para cadastrar o usuário"
+        >
+          {props.submitLabel || 'Cadastrar'}
+        </button>
+      </form>
+    </main>
+  );
 }

@@ -1,32 +1,29 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import banner from '../assets/img/cad_users.png'; // ✅ importa a imagem
-import * as bootstrap from 'bootstrap';
+import defaultBanner from '../assets/img/cad_users.png'; // ✅ imagem padrão
 
-export default function Header() {
+export default function Header({bannerImg = defaultBanner }) {
+  const collapseRef = useRef();
 
-  // Função que fecha o menu hamburguer se estiver aberto
   const handleNavClick = () => {
-    const navbar = document.getElementById('navbarNav');
-    if (navbar && navbar.classList.contains('show')) {
-      const bsCollapse = bootstrap.Collapse.getInstance(navbar) || new bootstrap.Collapse(navbar);
-      bsCollapse.hide();
+    const bsCollapse = window.bootstrap.Collapse.getInstance(collapseRef.current);
+    if (bsCollapse) {
+      bsCollapse.hide(); // Fecha o menu colapsado
     }
   };
 
   return (
     <header>
       <div className="container">
-        <div className="banner">
-          <img className="banner_cadastro" src={banner} alt="Banner do Sistema" /> {/* ✅ exibe o banner */}
+        <div className="banner text-center">
+          <img className="banner_cadastro" src={bannerImg} alt="Banner do Sistema" />
         </div>
-
 
         <nav className="navbar navbar-expand-lg mt-3">
           <div className="container-fluid">
             {/* Botão hamburguer para telas pequenas */}
             <button
-              className="navbar-toggler"
+              className="navbar-toggler ms-auto"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarNav"
@@ -37,11 +34,13 @@ export default function Header() {
               <span className="navbar-toggler-icon"></span>
             </button>
 
-
             {/* Menu colapsável */}
-            <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <div
+              ref={collapseRef}
+              className="collapse navbar-collapse justify-content-center justify-content-lg-center justify-content-end"
+              id="navbarNav"
+            >
               <ul className="navbar-nav">
-
                 <li className="nav-item">
                   <Link
                     to="/"
@@ -54,7 +53,6 @@ export default function Header() {
                     Home
                   </Link>
                 </li>
-
                 <li className="nav-item">
                   <Link
                     to="/cadastro"
@@ -67,7 +65,6 @@ export default function Header() {
                     Cadastro
                   </Link>
                 </li>
-
                 <li className="nav-item">
                   <Link
                     to="/consulta"
@@ -80,7 +77,6 @@ export default function Header() {
                     Consulta
                   </Link>
                 </li>
-
               </ul>
             </div>
           </div>
@@ -89,3 +85,4 @@ export default function Header() {
     </header>
   );
 }
+
