@@ -85,6 +85,10 @@ th {
     text-align: center;
 }
 
+label, InputField{
+  color: white;
+}
+
 
 @media (max-width: 768px) {
   main {
