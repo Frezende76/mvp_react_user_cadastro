@@ -5,7 +5,7 @@ import InputField from '../components/InputField'; // ✅ Importa componente reu
 export default function Cadastro(props) {
   const apiUrl = props.apiUrl || 'https://jsonplaceholder.typicode.com/users';
   const successMessage = props.successMessage || 'cadastrado(a) com sucesso!';
-  const duplicateMessage = props.duplicateMessage || 'já cadastrado(a) com os mesmos dados.';
+  const duplicateMessage = props.duplicateMessage || 'já cadastrado(a) no sistema.';
   const errorLoadingMessage = props.errorLoadingMessage || 'Erro ao carregar dados da API.';
   const invalidFormMessage = props.invalidFormMessage || 'Por favor, preencha todos os campos corretamente.';
 

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import UserCard from '../components/UserCard';
 
-export default function Consulta({
+const Consulta = ({
   title = "Consultar Usuários",
-  placeholder = "Digite o nome do usuário a pesquisar",
+  placeholder = "",
   noUsersMessage = "Nenhum usuário encontrado",
   deleteSuccessMessage = "deletado(a) com sucesso!",
   tooltipMessage = "Digite o nome do usuário a pesquisar"
-}) {
+}) => {
   const [usuarios, setUsuarios] = useState([]);
   const [filtroNome, setFiltroNome] = useState('');
   const [feedback, setFeedback] = useState('');
@@ -18,11 +18,11 @@ export default function Consulta({
   }, []);
 
   const handleDelete = index => {
-    const usuarioExcluido = usuarios[index]
+    const usuarioExcluido = usuarios[index];
     const novos = usuarios.filter((_, i) => i !== index);
     setUsuarios(novos);
     localStorage.setItem('usuarios', JSON.stringify(novos));
-    setFeedback(`${usuarioExcluido.nome} ${deleteSuccessMessage} `);
+    setFeedback(`${usuarioExcluido.nome} ${deleteSuccessMessage}`);
     setTimeout(() => setFeedback(''), 3000);
   };
 
@@ -74,6 +74,8 @@ export default function Consulta({
       </div>
     </main>
   );
-}
+};
+
+export default Consulta;
 
 
