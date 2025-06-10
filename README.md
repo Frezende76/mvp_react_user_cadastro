@@ -59,6 +59,7 @@ Acesse em `http://localhost:5173`.
 │   │   ├── Footer.jsx
 │   │   ├── Header.jsx
 │   │   ├── InputField.jsx
+│   │   ├── Menu.jsx
 │   │   ├── UserCard.jsx
 │   ├── pages/
 │   │   ├── Cadastro.jsx
