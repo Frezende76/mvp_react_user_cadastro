@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function NotFound(props) {
+const NotFound = (props) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,6 +18,8 @@ export default function NotFound(props) {
       </button>
     </main>
   );
-}
+};
+
+export default NotFound;
 
 

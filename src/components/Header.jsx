@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import defaultBanner from '../assets/img/cad_users.png'; // ✅ imagem padrão
 
-export default function Header({bannerImg = defaultBanner }) {
+const Header = ({ bannerImg = defaultBanner }) => {
   const collapseRef = useRef();
 
   const handleNavClick = () => {
@@ -84,5 +84,8 @@ export default function Header({bannerImg = defaultBanner }) {
       </div>
     </header>
   );
-}
+};
+
+export default Header;
+
 

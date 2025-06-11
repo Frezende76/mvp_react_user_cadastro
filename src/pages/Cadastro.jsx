@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { validateForm } from '../utils/validateForm';
 import InputField from '../components/InputField'; // ✅ Importa componente reutilizável
 
-export default function Cadastro(props) {
+const Cadastro = (props) => {
   const apiUrl = props.apiUrl || 'https://jsonplaceholder.typicode.com/users';
   const successMessage = props.successMessage || 'cadastrado(a) com sucesso!';
   const duplicateMessage = props.duplicateMessage || 'já cadastrado(a) no sistema.';
@@ -135,4 +135,6 @@ export default function Cadastro(props) {
       </form>
     </main>
   );
-}
+};
+
+export default Cadastro;

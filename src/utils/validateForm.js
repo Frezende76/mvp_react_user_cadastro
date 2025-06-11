@@ -1,4 +1,4 @@
-export const validateForm = data => {
+const validateForm = (data) => {
   return (
     data.nome && 
     data.endereco && 
@@ -6,3 +6,5 @@ export const validateForm = data => {
     data.telefone.length >= 9
   );
 };
+
+export default validateForm;

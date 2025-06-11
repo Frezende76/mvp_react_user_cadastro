@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function UserCard({ usuario, onDelete }) {
+const UserCard = ({ usuario, onDelete }) => {
   const { nome, endereco, email, telefone } = usuario;
 
   return (
@@ -23,4 +23,6 @@ export default function UserCard({ usuario, onDelete }) {
       </td>
     </tr>
   );
-}
+};
+
+export default UserCard;

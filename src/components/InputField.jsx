@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function InputField({
+const InputField = ({
   label,
   name,
   value,
@@ -9,7 +9,7 @@ export default function InputField({
   placeholder = '',
   tooltip = '',
   className = 'form-control mb-3'
-}) {
+}) => {
   return (
     <div>
       <label htmlFor={name} className="form-label">{label}</label>
@@ -27,4 +27,6 @@ export default function InputField({
       />
     </div>
   );
-}
+};
+
+export default InputField;
