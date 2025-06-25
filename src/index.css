@@ -20,6 +20,10 @@ body{
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+.container p, h1{
+  color: #fff;
+}
+
 h2, h3{
     text-align: center;
     color: #fff;
