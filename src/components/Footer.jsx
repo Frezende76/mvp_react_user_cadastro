@@ -1,5 +1,3 @@
-import React from "react";
-
 const Footer = ({ autor, ano }) => {
   return (
     <footer>

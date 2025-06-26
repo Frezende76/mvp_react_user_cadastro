@@ -1,5 +1,3 @@
-import React from 'react';
-
 const UserCard = ({ usuario, onDelete }) => {
   const { nome, endereco, email, telefone } = usuario;
 

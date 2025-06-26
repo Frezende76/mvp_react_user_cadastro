@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Home = (props) => {
   return (
     <main className="container text-center mt-4">
