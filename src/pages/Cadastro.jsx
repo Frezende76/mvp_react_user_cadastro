@@ -12,10 +12,8 @@ const Cadastro = (props) => {
   const [formData, setFormData] = useState({ nome: '', endereco: '', email: '', telefone: '' });
   const [usuariosApi, setUsuariosApi] = useState([]);
   const [feedback, setFeedback] = useState('');
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
     fetch(apiUrl)
       .then(res => res.json())
       .then(data =>
@@ -27,11 +25,9 @@ const Cadastro = (props) => {
             telefone: u.phone,
           }))
         ),
-        setLoading(false)
       )
       .catch(() => {
         setFeedback(errorLoadingMessage)
-        setLoading(false);
       });
   }, [apiUrl, errorLoadingMessage]);
 
@@ -80,15 +76,6 @@ const Cadastro = (props) => {
   return (
     <main className="container mt-4">
       <h2>{props.title || 'Cadastro de Usuários'}</h2>
-
-      {loading && (
-        <div className="d-flex justify-content-center my-3">
-          <div className="spinner-border text-primary" role="status">
-            <span className="visually-hidden">Carregando...</span>
-          </div>
-        </div>
-      )}
-      
       {feedback && <div className="alert alert-success">{feedback}</div>}
 
       <form onSubmit={handleSubmit}>
